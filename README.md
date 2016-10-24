@@ -22,9 +22,12 @@ echo localhost ansible_connection=local >> inventory
 #### Run playbook
 ```
 touch pb.yml
+
 - hosts: all
   tasks:
       - shell: echo "hello world"
+     
+ansible-playbook -i 'localhost,' -c local pb.yml     
 ```
 
 
