@@ -1,0 +1,22 @@
+- name: check the file exists
+  stat: path=~/projects/test/unzipper/avvdat-8327.zip
+  register: dat_file_exist
+  ignore_errors: yes
+  changed_when: False
+
+- name: print dat_file_exist
+  debug: var=dat_file_exist
+
+- name: make sure that sshd service is stopped
+  service: name=sshd state=stopped
+  when: dat_file_exist.stat.exists == False
+  changed_when: False
+
+- name: unzip the latest dat file avvepo8327dat.zip to ~/projects/test/unzipper location
+  unarchive: src=avvepo8327dat.zip dest=~/projects/test/unzipper creates=~/projects/test/unzipper/avvdat-8327.zip
+
+- name: start sshd service
+  service: name=sshd state=started
+  when: dat_file_exist.stat.exists == False
+  changed_when: False
+

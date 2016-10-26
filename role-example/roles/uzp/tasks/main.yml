@@ -1,1 +1,13 @@
-- unarchive: src=mf.zip dest=~/projects/
+- name: unzip {{unzip_file_name}} 
+  unarchive: src={{unzip_file_name}} dest=~/projects/ creates=~/projects/my-files
+
+- name: check if found
+  shell: cat ~/projects/test/founder | grep found
+  register: if_found
+  ignore_errors: yes
+  changed_when: False
+
+- name: if if_found then create file
+  shell: touch ~/projects/test/file1
+  when: if_found|success
+  changed_when: False

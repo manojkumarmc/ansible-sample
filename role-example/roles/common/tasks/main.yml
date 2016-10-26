@@ -1,2 +1,13 @@
 - name: run this command and ignore the result
-  shell: /usr/bin/cat ~/bashrc || /bin/true
+  shell: /usr/bin/cat ~/bashrc || /bin/true creates=~/projects/my-files
+
+- name: check content of file
+  shell: cat ~/projects/test/founder | grep found
+  register: found_shell_cat
+  ignore_errors: yes
+  changed_when: False
+
+- name: if found_shell_cat then create file
+  shell: touch ~/projects/file1
+  when: found_shell_cat|success
+  changed_when: False
