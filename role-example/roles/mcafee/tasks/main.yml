@@ -1,11 +1,13 @@
 - name: create folder if it doesnot exist
+  vars:
+    my_test_var: "role-var"
   file:
-    path: "~/projects/test/unzipper"
+    path: "~/projects/test/LinuxShield/engine/dat"
     state: directory
     recurse: yes
 
 - name: check the file exists
-  stat: path=~/projects/test/unzipper/avvdat-8327.zip
+  stat: path=~/projects/test/LinuxShield/engine/dat/avvdat-8327.zip
   register: dat_file_exist
   ignore_errors: yes
   changed_when: False
@@ -13,16 +15,20 @@
 - name: print dat_file_exist
   debug: var=dat_file_exist
 
+- name: check my_test_var
+  debug: var=my_test_var
+
+- name: check role var
+  debug: var=my_role_var
+
 - name: make sure that sshd service is stopped
   service: name=sshd state=stopped
   when: dat_file_exist.stat.exists == False
-  changed_when: False
 
-- name: unzip the latest dat file avvepo8327dat.zip to ~/projects/test/unzipper location
-  unarchive: src=avvepo8327dat.zip dest=~/projects/test/unzipper creates=~/projects/test/unzipper/avvdat-8327.zip
+- name: unzip the latest dat file avvepo8327dat.zip to ~/projects/test/LinuxShield/engine/dat location
+  unarchive: src=avvepo8327dat.zip dest=~/projects/test/LinuxShield/engine/dat creates=~/projects/test/LinuxShield/engine/dat/avvdat-8327.zip
 
 - name: start sshd service
   service: name=sshd state=started
   when: dat_file_exist.stat.exists == False
-  changed_when: False
 
