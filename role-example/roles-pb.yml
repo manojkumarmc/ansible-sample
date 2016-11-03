@@ -2,5 +2,5 @@
   roles:
       - common
       - uzp
-      - mcafee
+      - { role: mcafee, my_test_var: "goes in here" }
 
